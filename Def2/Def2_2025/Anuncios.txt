@@ -1,0 +1,50 @@
+1|AAA|¡Oferta AAA 1! Máxima prioridad y visibilidad.
+2|AAA|¡Oferta AAA 2! Máxima prioridad y visibilidad.
+3|AAA|¡Oferta AAA 3! Máxima prioridad y visibilidad.
+4|AAA|¡Oferta AAA 4! Máxima prioridad y visibilidad.
+5|AAA|¡Oferta AAA 5! Máxima prioridad y visibilidad.
+6|AAA|¡Oferta AAA 6! Máxima prioridad y visibilidad.
+7|AAA|¡Oferta AAA 7! Máxima prioridad y visibilidad.
+8|AAA|¡Oferta AAA 8! Máxima prioridad y visibilidad.
+9|AAA|¡Oferta AAA 9! Máxima prioridad y visibilidad.
+10|AAA|¡Oferta AAA 10! Máxima prioridad y visibilidad.
+11|AAA|¡Oferta AAA 11! Máxima prioridad y visibilidad.
+12|AAA|¡Oferta AAA 12! Máxima prioridad y visibilidad.
+13|AAA|¡Oferta AAA 13! Máxima prioridad y visibilidad.
+14|AAA|¡Oferta AAA 14! Máxima prioridad y visibilidad.
+15|AAA|¡Oferta AAA 15! Máxima prioridad y visibilidad.
+16|B|Anuncio B 16. Doble de prioridad en promoción.
+17|B|Anuncio B 17. Doble de prioridad en promoción.
+18|B|Anuncio B 18. Doble de prioridad en promoción.
+19|B|Anuncio B 19. Doble de prioridad en promoción.
+20|B|Anuncio B 20. Doble de prioridad en promoción.
+21|B|Anuncio B 21. Doble de prioridad en promoción.
+22|B|Anuncio B 22. Doble de prioridad en promoción.
+23|B|Anuncio B 23. Doble de prioridad en promoción.
+24|B|Anuncio B 24. Doble de prioridad en promoción.
+25|B|Anuncio B 25. Doble de prioridad en promoción.
+26|B|Anuncio B 26. Doble de prioridad en promoción.
+27|B|Anuncio B 27. Doble de prioridad en promoción.
+28|B|Anuncio B 28. Doble de prioridad en promoción.
+29|B|Anuncio B 29. Doble de prioridad en promoción.
+30|B|Anuncio B 30. Doble de prioridad en promoción.
+31|B|Anuncio B 31. Doble de prioridad en promoción.
+32|B|Anuncio B 32. Doble de prioridad en promoción.
+33|B|Anuncio B 33. Doble de prioridad en promoción.
+34|B|Anuncio B 34. Doble de prioridad en promoción.
+35|B|Anuncio B 35. Doble de prioridad en promoción.
+36|C|Mensaje C 36. Publicidad estándar.
+37|C|Mensaje C 37. Publicidad estándar.
+38|C|Mensaje C 38. Publicidad estándar.
+39|C|Mensaje C 39. Publicidad estándar.
+40|C|Mensaje C 40. Publicidad estándar.
+41|C|Mensaje C 41. Publicidad estándar.
+42|C|Mensaje C 42. Publicidad estándar.
+43|C|Mensaje C 43. Publicidad estándar.
+44|C|Mensaje C 44. Publicidad estándar.
+45|C|Mensaje C 45. Publicidad estándar.
+46|C|Mensaje C 46. Publicidad estándar.
+47|C|Mensaje C 47. Publicidad estándar.
+48|C|Mensaje C 48. Publicidad estándar.
+49|C|Mensaje C 49. Publicidad estándar.
+50|C|Mensaje C 50. Publicidad estándar.
