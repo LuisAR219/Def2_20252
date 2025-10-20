@@ -31,6 +31,20 @@ public:
     void setId(int id);
     void setCategoria(const std::string& categoria);
     void setMensaje(const std::string& mensaje);
+
+    static bool cargarAnunciosDesdeTXT();
+    static anuncio* obtenerAnuncioAleatorio();
+    static void resetearAnuncios();
+    static int getAnunciosDisponibles();
+    static int getTotalAnunciosCargados();
+
+
+private:
+    static int contarLineasArchivo();
+
+    static size_t calcularMemoriaString(const std::string& str);
+    static size_t calcularMemoriaAnuncio(const anuncio* anuncio);
+
 };
 
 #endif // ANUNCIO_H

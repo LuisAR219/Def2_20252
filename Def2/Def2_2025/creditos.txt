@@ -1,0 +1,10 @@
+101|Persona 1|ACD0000001|Productor
+102|Persona 2|ACD0000002|Productor
+103|Persona 3|ACD0000003|Productor
+104|Persona 4|ACD0000004|Compositor
+105|Persona 5|ACD0000005|Compositor
+106|Persona 6|ACD0000006|Compositor
+107|Persona 7|ACD0000007|Compositor
+108|Persona 8|ACD0000008|Músico
+109|Persona 9|ACD0000009|Músico
+110|Persona 10|ACD0000010|Músico

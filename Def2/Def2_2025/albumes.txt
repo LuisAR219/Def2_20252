@@ -1,0 +1,7 @@
+3000101|Album 1|30001|Pop,Rock|2024-01-15|Sello 1|/storage/30001/img/3000101.png|8
+3000102|Album 2|30001|Pop,Rock|2024-02-15|Sello 2|/storage/30001/img/3000102.png|9
+3000201|Album 3|30002|Jazz,Latina|2024-03-15|Sello 3|/storage/30002/img/3000201.png|7
+3000202|Album 4|30002|Jazz,Latina|2024-04-15|Sello 4|/storage/30002/img/3000202.png|9
+3000301|Album 5|30003|Jazz,Latina|2024-05-15|Sello 5|/storage/30003/img/3000301.png|9
+3000401|Album 6|30004|Jazz,Latina|2024-06-15|Sello 6|/storage/30004/img/3000401.png|8
+3000501|Album 7|30005|Jazz,Latina|2024-07-15|Sello 7|/storage/30005/img/3000501.png|7

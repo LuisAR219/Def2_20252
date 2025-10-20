@@ -1,0 +1,5 @@
+30001|Artista 1|43|Colombia|26587|1
+30002|Artista 2|35|México|86976|2
+30003|Artista 3|43|España|85762|3
+30004|Artista 4|26|Chile|52736|4
+30005|Artista 5|37|Argentina|93953|5
