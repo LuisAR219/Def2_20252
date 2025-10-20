@@ -5,7 +5,10 @@ CONFIG -= qt
 
 SOURCES += \
         anuncio.cpp \
+        cancion.cpp \
+        cargarcanciones.cpp \
         main.cpp
 
 HEADERS += \
-    anuncio.h
+    anuncio.h \
+    cancion.h
