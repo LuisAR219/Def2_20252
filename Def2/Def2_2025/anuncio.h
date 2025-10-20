@@ -19,6 +19,10 @@ private:
     static int totalIteraciones;
     static size_t totalMemoria;
 
+    static int contadorAAA;
+    static int contadorB;
+    static int contadorC;
+
 public:
     anuncio();
     anuncio(int id, const std::string& categoria, const std::string& mensaje);
@@ -38,13 +42,24 @@ public:
     static int getAnunciosDisponibles();
     static int getTotalAnunciosCargados();
 
+    static int getContadorAAA();
+    static int getContadorB();
+    static int getContadorC();
+
+    static void mostrarMetricasFinales();
+    static int getTotalIteraciones();
+    static size_t getTotalMemoria();
 
 private:
+    static void inicializarArregloUsados();
+    static int generarNumeroAleatorio(int min, int max);
     static int contarLineasArchivo();
+    static void parsearLinea(const std::string& linea, int& id, std::string& categoria, std::string& mensaje);
 
+    static int calcularPesoCategoria(const std::string& categoria);
     static size_t calcularMemoriaString(const std::string& str);
     static size_t calcularMemoriaAnuncio(const anuncio* anuncio);
-
 };
 
 #endif // ANUNCIO_H
+
