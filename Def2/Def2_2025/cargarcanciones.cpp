@@ -10,9 +10,9 @@ static size_t totalMemoria = 0;
 
 const int MAX_BLOQUES = 10;
 const int TAM_BLOQUE = 1000;
-static Cancion* canciones[MAX_BLOQUES][TAM_BLOQUE] = {nullptr};
-static int cancionesPorBloque[MAX_BLOQUES] = {0};
-static int bloquesUsados = 0;
+int bloquesUsados = 0;
+int cancionesPorBloque[10] = {0};
+Cancion* canciones[10][1000] = {nullptr};
 
 void parsearLineaCancion(const string& linea, Cancion*& nuevaCancion) {
     totalIteraciones++;
