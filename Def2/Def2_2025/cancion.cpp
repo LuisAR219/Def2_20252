@@ -4,8 +4,7 @@
 using namespace std;
 
 
-Cancion::Cancion(int id, const string& nombre, float duracion,
-                 const string& rutaBase, long tamano, int r1, int r2)
+Cancion::Cancion(int id, const string& nombre, float duracion,  const string& rutaBase, long tamano, int r1, int r2)
     : id(id), nombre(nombre), duracion(duracion), rutaBase(rutaBase), tamano(tamano) {
     relacionados[0] = r1;
     relacionados[1] = r2;
@@ -33,5 +32,10 @@ void Cancion::mostrarCancion(const std::string& membresia) const {
     std::cout << "---------------------------------------------" << std::endl;
 }
 
-
-
+bool Cancion::operator==(const Cancion& otra) const {
+    return (id == otra.id) ||
+           (nombre == otra.nombre &&
+            duracion == otra.duracion &&
+            rutaBase == otra.rutaBase &&
+            tamano == otra.tamano);
+}

@@ -26,6 +26,7 @@ public:
     long getTamano() const;
     int getRelacionado1() const;
     int getRelacionado2() const;
+    bool operator==(const Cancion& otra) const;
 };
 
 #endif // CANCION_H

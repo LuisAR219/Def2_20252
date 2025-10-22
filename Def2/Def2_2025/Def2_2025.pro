@@ -8,9 +8,11 @@ SOURCES += \
         cancion.cpp \
         cargarcanciones.cpp \
         main.cpp \
+        personacredito.cpp \
         playlist.cpp
 
 HEADERS += \
     anuncio.h \
     cancion.h \
+    personacredito.h \
     playlist.h

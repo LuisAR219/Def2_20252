@@ -16,6 +16,7 @@ private:
     int cancionesPorBloque[MAX_BLOQUES];
     Playlist* seguida;
     long iteraciones;
+
     long memoriaUsada;
     int idUsuario;
 
@@ -38,6 +39,5 @@ public:
 };
 
 #endif
-
 
 
