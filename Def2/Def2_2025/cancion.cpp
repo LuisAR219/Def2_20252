@@ -28,7 +28,7 @@ void Cancion::mostrarCancion(const std::string& membresia) const {
 
     std::cout << "---------------------------------------------" << std::endl;
     std::cout << "Ruta al archivo de audio: " << rutaBase << calidad << std::endl;
-    std::cout << "Duración: " << duracion << " min" << std::endl;
+    std::cout << "Duracion: " << duracion << " min" << std::endl;
     std::cout << "---------------------------------------------" << std::endl;
 }
 

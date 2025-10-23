@@ -1,4 +1,9 @@
 #include "playlist.h"
+#include "cancion.h"
+extern bool cargarCancionesDesdeTXT(const string& nombreArchivo);
+extern Cancion* canciones[10][1000];
+extern int cancionesPorBloque[10];
+extern int bloquesUsados;
 
 Playlist::Playlist() {
     for (int i = 0; i < MAX_BLOQUES; i++) {
@@ -22,6 +27,17 @@ int Playlist::obtenerIdUsuario() const {
 void Playlist::agregarCancion(Cancion* c) {
     if (c == nullptr) return;
 
+    for (int b = 0; b < MAX_BLOQUES; b++) {
+        if (bloques[b] != nullptr) {
+            for (int i = 0; i < cancionesPorBloque[b]; i++) {
+                if (bloques[b][i] != nullptr && *(bloques[b][i]) == *c) {
+                    cout << "La canción ya existe en la playlist.\n";
+                    return;
+                }
+            }
+        }
+    }
+
     iteraciones++;
     for (int b = 0; b < MAX_BLOQUES; b++) {
         if (bloques[b] == nullptr) {
@@ -39,6 +55,7 @@ void Playlist::agregarCancion(Cancion* c) {
 
     cout << "Playlist llena. No se pudo agregar la canción.\n";
 }
+
 
 void Playlist::seguirPlaylist(Playlist* otra) {
     if (otra == nullptr) {
@@ -281,4 +298,3 @@ void Playlist::cargarDesdeArchivoPorId(int id, const string& carpetaOrigen) {
     archivo.close();
     cout << "Playlist del usuario " << idUsuario << " cargada correctamente desde: " << ruta << endl;
 }
-

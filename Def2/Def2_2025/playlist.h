@@ -9,6 +9,7 @@ using namespace std;
 
 #define MAX_BLOQUES 10
 #define TAM_BLOQUE 1000
+#define K_REPRODUCCIONES_AUTOMATICAS 10
 
 class Playlist {
 private:
@@ -36,8 +37,19 @@ public:
 
     long obtenerIteracionesTotales() const { return iteraciones; }
     long obtenerMemoriaUsadaTotal() const { return memoriaUsada; }
+
+    Cancion** obtenerBloque(int idx) const {
+        if (idx < 0 || idx >= MAX_BLOQUES) return nullptr;
+        return bloques[idx];
+    }
+
+    int obtenerCancionesPorBloque(int idx) const {
+        if (idx < 0 || idx >= MAX_BLOQUES) return 0;
+        return cancionesPorBloque[idx];
+    }
 };
 
 #endif
+
 
 
