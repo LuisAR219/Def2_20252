@@ -298,3 +298,44 @@ void Playlist::cargarDesdeArchivoPorId(int id, const string& carpetaOrigen) {
     archivo.close();
     cout << "Playlist del usuario " << idUsuario << " cargada correctamente desde: " << ruta << endl;
 }
+
+void Playlist::crearDesdeCancionesCargadas() {
+    iteraciones = 0;
+    memoriaUsada = sizeof(Playlist);
+
+    // Limpiar bloques previos
+    for (int i = 0; i < MAX_BLOQUES; i++) {
+        if (bloques[i] != nullptr) {
+            delete[] bloques[i];
+            bloques[i] = nullptr;
+            cancionesPorBloque[i] = 0;
+        }
+    }
+
+    // Crear playlist con todas las canciones cargadas
+    for (int b = 0; b <= bloquesUsados && b < MAX_BLOQUES; b++) {
+        iteraciones++;
+
+        if (::cancionesPorBloque[b] > 0) {  // ← usar las globales
+            bloques[b] = new Cancion*[TAM_BLOQUE];
+            memoriaUsada += sizeof(Cancion*) * TAM_BLOQUE;
+
+            for (int j = 0; j < TAM_BLOQUE; j++)
+                bloques[b][j] = nullptr;
+
+            // Copiar punteros desde las globales
+            for (int i = 0; i < ::cancionesPorBloque[b]; i++) {
+                bloques[b][i] = ::canciones[b][i];
+                this->cancionesPorBloque[b]++;  // actualizar el contador local
+                iteraciones++;
+            }
+        }
+    }
+
+    cout << "\nPlaylist creada con todas las canciones cargadas ("
+         << (bloquesUsados + 1) << " bloque(s)).\n";
+    cout << "Iteraciones realizadas: " << iteraciones << endl;
+    cout << "Memoria estimada usada: " << memoriaUsada << " bytes\n";
+}
+
+

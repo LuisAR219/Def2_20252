@@ -15,6 +15,7 @@ SOURCES += \
 HEADERS += \
     anuncio.h \
     cancion.h \
+    cargarcanciones.h \
     personacredito.h \
     playlist.h \
     usuario.h

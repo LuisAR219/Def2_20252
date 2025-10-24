@@ -51,7 +51,7 @@ void Usuario::reproducirAleatorioDesdeBloques(Playlist* lista) {
         return;
     }
 
-    cout << "\n=== Reproducción aleatoria iniciada ===\n";
+    cout << "\n=== Reproduccion aleatoria iniciada ===\n";
 
     while (reproducidas < K_REPRODUCCIONES_AUTOMATICAS) {
         std::uniform_int_distribution<int> distBloque(0, nValid - 1);
@@ -71,7 +71,7 @@ void Usuario::reproducirAleatorioDesdeBloques(Playlist* lista) {
         if (actual == nullptr) continue;
 
         string calidad = (esPremium() ? "_320.ogg" : "_128.ogg");
-        cout << "[Bloque " << bloqueSel << "] → Reproduciendo: "
+        cout << "[Bloque " << bloqueSel << "] Reproduciendo: "
              << actual->getNombre()
              << " | Ruta: " << actual->getRutaBase()
              << calidad << " (" << actual->getDuracion() << " min)" << endl;
@@ -92,9 +92,9 @@ void Usuario::reproducirAleatorioDesdeBloques(Playlist* lista) {
     iteraciones_totales += iter_local;
     memoria_total += mem_local;
 
-    cout << "\n=== Reproducción aleatoria finalizada ===" << endl;
+    cout << "\n=== Reproduccion aleatoria finalizada ===" << endl;
     cout << "Canciones reproducidas: " << reproducidas << endl;
-    cout << "Iteraciones locales: " << iter_local << endl;
+    cout << "Iteraciones locales (Sin iteraciones de Chrono): " << iter_local << endl;
     cout << "Memoria estimada: " << mem_local << " bytes" << endl;
 }
 
@@ -127,7 +127,7 @@ void Usuario::mostrarHistorial5() const {
         }
         idx = (idx + 1) % 5;
     }
-    cout << "Iteraciones historial: " << iteracionesHistorial
+    cout << "Iteraciones historial (Sin contar iteraciones de Chrono): " << iteracionesHistorial
          << " | Memoria estimada historial: " << memoriaHistorial << " bytes" << endl;
 }
 
@@ -141,7 +141,7 @@ void Usuario::reproducirEnOrden(Playlist* lista) {
     long mem_local = 0;
     int reproducidas = 0;
 
-    cout << "\n=== Reproducción en orden iniciada ===\n";
+    cout << "\n=== Reproduccion en orden iniciada ===\n";
 
     for (int b = 0; b < MAX_BLOQUES; ++b) {
         int totalEnBloque = lista->obtenerCancionesPorBloque(b);
@@ -157,7 +157,7 @@ void Usuario::reproducirEnOrden(Playlist* lista) {
             if (actual == nullptr) continue;
 
             string calidad = (esPremium() ? "_320.ogg" : "_128.ogg");
-            cout << "→ Reproduciendo: " << actual->getNombre()
+            cout << " Reproduciendo: " << actual->getNombre()
                  << " | Ruta: " << actual->getRutaBase()
                  << calidad << " (" << actual->getDuracion() << " min)" << endl;
 
@@ -179,9 +179,9 @@ void Usuario::reproducirEnOrden(Playlist* lista) {
     iteraciones_totales += iter_local;
     memoria_total += mem_local;
 
-    cout << "\n=== Reproducción en orden finalizada ===" << endl;
+    cout << "\n=== Reproduccion en orden finalizada ===" << endl;
     cout << "Canciones reproducidas: " << reproducidas << endl;
-    cout << "Iteraciones locales: " << iter_local << endl;
+    cout << "Iteraciones locales (Sin contar iteraciones de Chrono): " << iter_local << endl;
     cout << "Memoria estimada: " << mem_local << " bytes" << endl;
 }
 

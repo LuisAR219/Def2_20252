@@ -7,12 +7,13 @@
 #include <fstream>
 using namespace std;
 
-#define MAX_BLOQUES 10
-#define TAM_BLOQUE 1000
-#define K_REPRODUCCIONES_AUTOMATICAS 10
+
 
 class Playlist {
 private:
+    static const int MAX_BLOQUES = 10;
+    static const int TAM_BLOQUE = 1000;
+    static const int K_REPRODUCCIONES_AUTOMATICAS = 10;
     Cancion** bloques[MAX_BLOQUES];
     int cancionesPorBloque[MAX_BLOQUES];
     Playlist* seguida;
@@ -22,6 +23,7 @@ private:
     int idUsuario;
 
 public:
+
     Playlist();
     void asignarIdUsuario(int id);
     int obtenerIdUsuario() const;
@@ -34,6 +36,7 @@ public:
 
     void guardarEnArchivo(const string& carpetaDestino);
     void cargarDesdeArchivoPorId(int id, const string& carpetaOrigen);
+    void crearDesdeCancionesCargadas();
 
     long obtenerIteracionesTotales() const { return iteraciones; }
     long obtenerMemoriaUsadaTotal() const { return memoriaUsada; }

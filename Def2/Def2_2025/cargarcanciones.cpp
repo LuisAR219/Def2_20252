@@ -87,8 +87,10 @@ void parsearLineaCancion(const string& linea, Cancion*& nuevaCancion) {
     nuevaCancion = new Cancion(id, nombre, duracion, ruta, tamano, rel1, rel2);
 }
 
-bool cargarCancionesDesdeTXT(const string& nombreArchivo) {
-    ifstream archivo(nombreArchivo);
+bool cargarCancionesDesdeTXT(const string& nombreArchivoIgnorado) {
+    string nombreArchivo = "canciones.txt";
+
+    ifstream archivo(nombreArchivo.c_str());
     totalIteraciones++;
 
     if (!archivo.is_open()) {
@@ -98,6 +100,14 @@ bool cargarCancionesDesdeTXT(const string& nombreArchivo) {
 
     string linea;
     int totalCargadas = 0;
+
+    bloquesUsados = 0;
+    for (int i = 0; i < MAX_BLOQUES; i++) {
+        cancionesPorBloque[i] = 0;
+        for (int j = 0; j < TAM_BLOQUE; j++) {
+            canciones[i][j] = nullptr;
+        }
+    }
 
     while (getline(archivo, linea)) {
         totalIteraciones++;
@@ -127,6 +137,7 @@ bool cargarCancionesDesdeTXT(const string& nombreArchivo) {
          << " | Memoria estimada: " << totalMemoria << " bytes\n";
     return true;
 }
+
 
 
 void mostrarCancionesCargadas(int limite = 10, const string& membresia = "C") {
