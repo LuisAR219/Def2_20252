@@ -1,114 +1,54 @@
 #ifndef ALBUM_H
 #define ALBUM_H
 
-#include <iostream>
 #include <string>
-#include <random>
-#include <chrono>
+#include <iostream>
 #include <fstream>
-
 using namespace std;
-
-// Límites
-#define MAX_ALBUMS 1000
-#define MAX_CANCIONES_POR_ALBUM 500
 
 class Album {
 private:
-    // Metadatos
+    string nombre;
     int id;
-    string titulo;
-    int idArtista;
-    string generosCSV;
-    string fechaLanzamiento;
+    string generos[4];
+    int totalGeneros;
+    string fecha;
     string sello;
     string rutaPortada;
-    int rating;
+    int puntuacion;
 
-    // IDs de canciones (gestión manual de arreglo)
-    int* idsCanciones;
-    int capacidadIds;
-    int cantidadIds;
+    static Album* lista[100];
+    static int cantidad;
 
-    // Constructor privado usado por loader
-    Album(int id,
-          const string& titulo,
-          int idArtista,
-          const string& generosCSV,
-          const string& fechaLanzamiento,
-          const string& sello,
-          const string& rutaPortada,
-          int rating);
+    static long totalIteraciones;
+    static size_t totalMemoria;
 
 public:
-    // Destructor
+    Album();
+    Album(const string& nombre, int id, const string generos_[], int totalG,
+          const string& fecha, const string& sello,
+          const string& ruta, int puntuacion);
     ~Album();
 
-    // Getters
+    string getNombre() const;
     int getId() const;
-    string getTitulo() const;
-    int getIdArtista() const;
-    string getGenerosCSV() const;
-    string getFechaLanzamiento() const;
+    string getGenero(int i) const;
+    int getTotalGeneros() const;
+    string getFecha() const;
     string getSello() const;
     string getRutaPortada() const;
-    int getRating() const;
-    // Devuelve puntero al arreglo interno de ids (lectura)
-    const int* getIdsCanciones(int &outCantidad) const;
+    int getPuntuacion() const;
 
-    // Setters simples
-    void setTitulo(const string& t);
-    void setSello(const string& s);
-    void setRutaPortada(const string& r);
-    void setFechaLanzamiento(const string& f);
-    void setRating(int r);
+    void mostrarAlbum() const;
 
-    // Gestión de ids de canciones
-    bool agregarIdCancion(int idCancion);   // evita duplicados
-    bool eliminarIdCancion(int idCancion);  // true si eliminó
-    bool contieneCancion(int idCancion) const;
-    int cantidadCanciones() const;
+    static bool cargarDesdeArchivo(const string& ruta);
+    static void imprimirTodos();
+    static int getCantidad();
+    static void liberarMemoria();
 
-    // Serializar (no escribe a disco por sí mismo)
-    string serializarLinea() const; // formato: id|titulo|idArtista|generosCSV|fecha|sello|ruta|rating
-
-    // Mostrar
-    void mostrarResumen() const;
-
-    // -----------------------
-    // Funciones estáticas para gestionar catálogo (I/O dentro de la clase)
-    // -----------------------
-    static bool cargarDesdeArchivo(const string& rutaArchivo);
-    static bool guardarCatalogoEnArchivo(const string& rutaArchivo);
-
-    // Acceso al catálogo
-    static Album* obtenerPorId(int id);
-    // obtenerPorArtista llena el array 'out' hasta 'maxOut' y retorna cuantos encontró
-    static int obtenerPorArtista(int idArtista, Album** out, int maxOut);
-    static int obtenerTodos(Album** out, int maxOut); // devuelve cantidad
-
-    static void limpiarCatalogo();
-
-private:
-    // Catálogo estático (única clase responsable de memoria)
-    static Album* catalogo[MAX_ALBUMS];
-    static int catalogoCount;
-
-    // Helpers de parsing y strings (implementados manualmente)
-    static string trim(const string& s);
-    static int findChar(const string& s, char c, int start);
-    static string substring(const string& s, int start, int length);
-    static bool isDigits(const string& s);
-
-    // crear y registrar (interno)
-    static Album* crearYRegistrar(int id,
-                                  const string& titulo,
-                                  int idArtista,
-                                  const string& generosCSV,
-                                  const string& fechaLanzamiento,
-                                  const string& sello,
-                                  const string& rutaPortada,
-                                  int rating);
+    static void mostrarMetricas();
+    static long getTotalIteraciones();
+    static size_t getTotalMemoria();
 };
 
 #endif // ALBUM_H

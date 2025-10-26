@@ -2,12 +2,10 @@
 
 using namespace std;
 
-// Inicialización de miembros estáticos
 Artista* Artista::lista = nullptr;
 size_t Artista::capacidad = 0;
 size_t Artista::cantidad = 0;
 
-// Métodos privados
 void Artista::init(int id_, const string& nombre_, int edad_,
                    const string& pais_, long seguidores_, int posicion_) {
     id = id_;
@@ -27,7 +25,6 @@ void Artista::asegurarCapacidad() {
     }
     if (cantidad < capacidad) return;
 
-    // duplicar capacidad
     size_t nuevaCap = capacidad * 2;
     Artista* nuevo = new Artista[nuevaCap];
     for (size_t i = 0; i < cantidad; ++i) {
@@ -38,7 +35,6 @@ void Artista::asegurarCapacidad() {
     capacidad = nuevaCap;
 }
 
-// Constructores
 Artista::Artista()
     : id(0), nombre(""), edad(0), pais(""), seguidores(0), posicionTendenciaGlobal(0)
 {}
@@ -48,7 +44,6 @@ Artista::Artista(int id_, const string& nombre_, int edad_,
     init(id_, nombre_, edad_, pais_, seguidores_, posicion);
 }
 
-// ---------- Getters ----------
 int Artista::getId() const { return id; }
 const string& Artista::getNombre() const { return nombre; }
 int Artista::getEdad() const { return edad; }
@@ -56,7 +51,6 @@ const string& Artista::getPais() const { return pais; }
 long Artista::getSeguidores() const { return seguidores; }
 int Artista::getPosicionTendenciaGlobal() const { return posicionTendenciaGlobal; }
 
-// Representación
 void Artista::print() const {
     cout << "ID: " << id
          << " | Nombre: " << nombre
@@ -72,7 +66,6 @@ string Artista::toLine() const {
            pais + "|" + to_string(seguidores) + "|" + to_string(posicionTendenciaGlobal);
 }
 
-// Carga
 void Artista::cargarDesdeArchivo(const string& ruta) {
     ifstream in(ruta.c_str());
     if (!in.is_open()) {
@@ -80,7 +73,6 @@ void Artista::cargarDesdeArchivo(const string& ruta) {
         return;
     }
 
-    // aseguramos la estructura de almacenamiento inicial
     if (lista == nullptr) {
         asegurarCapacidad();
     }
@@ -89,10 +81,8 @@ void Artista::cargarDesdeArchivo(const string& ruta) {
     size_t nroLinea = 0;
     while (getline(in, linea)) {
         ++nroLinea;
-        // Saltar líneas vacías
         if (linea.empty()) continue;
 
-        // Parseo manual: extraer hasta 6 campos separados por '|'
         string campos[6];
         int campoIndex = 0;
         size_t start = 0;
@@ -110,7 +100,6 @@ void Artista::cargarDesdeArchivo(const string& ruta) {
             continue;
         }
 
-        // Conversión y validación de campos numéricos
         int idVal = 0;
         int edadVal = 0;
         long seguidoresVal = 0;
@@ -127,7 +116,6 @@ void Artista::cargarDesdeArchivo(const string& ruta) {
             continue;
         }
 
-        // Validaciones simples
         if (idVal <= 0) {
             cerr << "Linea " << nroLinea << ": id inválido (" << idVal << "), se omite.\n";
             continue;
@@ -145,7 +133,6 @@ void Artista::cargarDesdeArchivo(const string& ruta) {
             continue;
         }
 
-        // Verificar duplicados (búsqueda lineal)
         bool duplicado = false;
         for (size_t i = 0; i < cantidad; ++i) {
             if (lista[i].getId() == idVal) {
@@ -158,7 +145,6 @@ void Artista::cargarDesdeArchivo(const string& ruta) {
             continue;
         }
 
-        // Si todo OK, asegurar capacidad y añadir
         asegurarCapacidad();
         lista[cantidad] = Artista(idVal, campos[1], edadVal, campos[3], seguidoresVal, posicionVal);
         ++cantidad;
@@ -167,7 +153,6 @@ void Artista::cargarDesdeArchivo(const string& ruta) {
     in.close();
 }
 
-// Accesos y utilidades
 const Artista* Artista::getLista() {
     return lista;
 }
@@ -190,4 +175,3 @@ void Artista::liberarMemoria() {
         cantidad = 0;
     }
 }
-
