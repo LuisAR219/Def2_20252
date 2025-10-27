@@ -13,6 +13,7 @@ extern long memoria_total;
 
 // Prototipos de funciones
 void menuSeguirUsuario(Usuario* usuario, Playlist* playlist);
+string obtenerUsuarioSeguidoActual(const string& nickname);
 void cargarDatosIniciales();
 void mostrarMetricasFinales();
 bool cargarUsuariosDesdeArchivo(Usuario**& usuarios, int& totalUsuarios);

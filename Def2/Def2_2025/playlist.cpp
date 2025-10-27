@@ -19,6 +19,47 @@ Playlist::Playlist() {
     nicknameUsuario = "";
 }
 
+#include <cctype>
+
+bool isFloat(const string& str) {
+    if (str.empty()) return false;
+
+    bool hasDecimal = false;
+    bool hasDigits = false;
+    bool hasExponent = false;
+
+    for (size_t i = 0; i < str.length(); i++) {
+        char c = str[i];
+
+        if (isdigit(c)) {
+            hasDigits = true;
+        } else if (c == '.' && !hasDecimal && !hasExponent) {
+            hasDecimal = true;
+        } else if ((c == 'e' || c == 'E') && !hasExponent && hasDigits) {
+            hasExponent = true;
+            hasDigits = false;
+        } else if (c == '-' && i == 0) {
+            // Signo negativo al inicio
+        } else if (c == '-' && hasExponent && !hasDigits) {
+            // Signo negativo después del exponente
+        } else if (c == '+' && i == 0) {
+            // Signo positivo al inicio
+        } else if (c == '+' && hasExponent && !hasDigits) {
+            // Signo positivo después del exponente
+        } else {
+            return false;
+        }
+    }
+
+    return hasDigits;
+}
+
+// Función auxiliar min (si no existe)
+template<typename T>
+T min(T a, T b) {
+    return (a < b) ? a : b;
+}
+
 void Playlist::asignarNicknameUsuario(const string& nickname) {
     nicknameUsuario = nickname;
 }
@@ -241,75 +282,93 @@ void Playlist::cargarDesdeArchivoPorNickname(const string& nickname, const strin
 
     nicknameUsuario = nickname;
     string linea;
+    int lineasCargadas = 0;
+    int lineasConError = 0;
 
     while (getline(archivo, linea)) {
         if (linea.empty()) continue;
         iteraciones++;
 
-        // Verificar si es una línea de usuario seguido
-        if (linea.find("SEGUIDO|") == 0) {
-            string usuarioSeguido = linea.substr(8); // Extraer después de "SEGUIDO|"
-            // Aquí deberías cargar la playlist del usuario seguido
-            // Por ahora solo guardamos la referencia
-            cout << "DEBUG: Usuario seguido encontrado: " << usuarioSeguido << endl;
+        string campos[7];
+        int campoIndex = 0;
+        size_t start = 0;
+        size_t end = 0;
 
-            // Cargar la playlist del usuario seguido
-            Playlist* playlistSeguida = new Playlist();
-            playlistSeguida->cargarDesdeArchivoPorNickname(usuarioSeguido, carpetaOrigen);
-            seguirPlaylist(playlistSeguida);
+        for (int i = 0; i < 7 && start < linea.length(); i++) {
+            end = linea.find('|', start);
+            if (end == string::npos) {
+                campos[i] = linea.substr(start);
+                campoIndex = i + 1;
+                break;
+            }
+            campos[i] = linea.substr(start, end - start);
+            start = end + 1;
+            campoIndex = i + 1;
+        }
+
+        if (campoIndex < 7) {
+            lineasConError++;
             continue;
         }
 
-        // Procesar línea de canción normal
-        size_t pos = 0;
-        int idCancion;
-        string nombre, artista, rutaBase;
-        float duracion;
-        long tamano;
-        int r1, r2;
+        try {
+            int idCancion = stoi(campos[0]);
+            string nombre = campos[1];
 
-        // Campo 1: ID
-        pos = linea.find('|');
-        idCancion = stoi(linea.substr(0, pos));
-        linea.erase(0, pos + 1);
+            string artista;
+            float duracion;
+            string rutaBase;
+            long tamano;
+            int r1, r2;
 
-        // Campo 2: Nombre
-        pos = linea.find('|');
-        nombre = linea.substr(0, pos);
-        linea.erase(0, pos + 1);
+            if (!isFloat(campos[2]) && isFloat(campos[3])) {
+                artista = campos[2];
+                duracion = stof(campos[3]);
+                rutaBase = campos[4];
+                tamano = stol(campos[5]);
+            }
+            else if (isFloat(campos[2]) && !isFloat(campos[3])) {
+                duracion = stof(campos[2]);
+                artista = campos[3];
+                rutaBase = campos[4];
+                tamano = stol(campos[5]);
+            }
+            else {
+                artista = campos[2];
+                duracion = stof(campos[3]);
+                rutaBase = campos[4];
+                tamano = stol(campos[5]);
+            }
 
-        // Campo 3: Artista
-        pos = linea.find('|');
-        artista = linea.substr(0, pos);
-        linea.erase(0, pos + 1);
+            size_t comma = campos[6].find(',');
+            if (comma != string::npos) {
+                r1 = stoi(campos[6].substr(0, comma));
+                r2 = stoi(campos[6].substr(comma + 1));
+            } else {
+                r1 = r2 = 0;
+            }
 
-        // Campo 4: Duración
-        pos = linea.find('|');
-        duracion = stof(linea.substr(0, pos));
-        linea.erase(0, pos + 1);
+            if (duracion > 1000 || duracion < 0.1) {
+                duracion = 3.5f;
+            }
 
-        // Campo 5: Ruta
-        pos = linea.find('|');
-        rutaBase = linea.substr(0, pos);
-        linea.erase(0, pos + 1);
+            if (isFloat(artista)) {
+                artista = "Artista Desconocido";
+            }
 
-        // Campo 6: Tamaño
-        pos = linea.find('|');
-        tamano = stol(linea.substr(0, pos));
-        linea.erase(0, pos + 1);
+            Cancion* nueva = new Cancion(idCancion, nombre, artista, duracion, rutaBase, tamano, r1, r2);
+            memoriaUsada += sizeof(Cancion);
+            agregarCancion(nueva);
+            lineasCargadas++;
 
-        // Campo 7: Relacionados
-        pos = linea.find(',');
-        r1 = stoi(linea.substr(0, pos));
-        r2 = stoi(linea.substr(pos + 1));
-
-        Cancion* nueva = new Cancion(idCancion, nombre, artista, duracion, rutaBase, tamano, r1, r2);
-        memoriaUsada += sizeof(Cancion);
-        agregarCancion(nueva);
+        } catch (const exception& e) {
+            lineasConError++;
+            continue;
+        }
     }
 
     archivo.close();
-    cout << "Playlist de " << nicknameUsuario << " cargada correctamente desde: " << ruta << endl;
+    cout << "Playlist de " << nicknameUsuario << " cargada: " << lineasCargadas << " canciones" << endl;
 }
 
 
