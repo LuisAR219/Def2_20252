@@ -1,0 +1,2 @@
+1|Master of Puppets|8.2|Metal/Master_of_Puppets|10240|2,3
+2|One|7.4|Metal/One|8450|1,3

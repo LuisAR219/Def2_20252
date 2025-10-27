@@ -4,8 +4,24 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += \
+        album.cpp \
         anuncio.cpp \
-        main.cpp
+        artista.cpp \
+        cancion.cpp \
+        cargarcanciones.cpp \
+        funcionalidades.cpp \
+        main.cpp \
+        personacredito.cpp \
+        playlist.cpp \
+        usuario.cpp
 
 HEADERS += \
-    anuncio.h
+    album.h \
+    anuncio.h \
+    artista.h \
+    cancion.h \
+    cargarcanciones.h \
+    funcionalidades.h \
+    personacredito.h \
+    playlist.h \
+    usuario.h

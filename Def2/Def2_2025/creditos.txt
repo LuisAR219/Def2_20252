@@ -1,0 +1,10 @@
+Persona 1|ACD0000001|Productor
+Persona 2|ACD0000002|Productor
+Persona 3|ACD0000003|Productor
+Persona 4|ACD0000004|Compositor
+Persona 5|ACD0000005|Compositor
+Persona 6|ACD0000006|Compositor
+Persona 7|ACD0000007|Compositor
+Persona 8|ACD0000008|Músico
+Persona 9|ACD0000009|Músico
+Persona 10|ACD0000010|Músico

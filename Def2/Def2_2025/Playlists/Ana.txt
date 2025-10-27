@@ -1,0 +1,2 @@
+3|Thriller|5.6|Pop/Thriller|7000|1,2
+4|Billie Jean|4.8|Pop/Billie_Jean|6500|1,3
