@@ -1,7 +1,7 @@
 PremiumUser1|300010203|1|Colombia|Ciudad P1|2025-01-01|-
 PremiumUser2|300020103|1|Colombia|Ciudad P2|2025-01-02|PremiumUser1
 PremiumUser3|300010201|1|Colombia|Ciudad P3|2025-01-03|PremiumUser4
-PremiumUser4|300020201|1|Colombia|Ciudad P4|2025-01-04|-
+PremiumUser4|300020201|1|Colombia|Ciudad P4|2025-01-04|PremiumUser1
 StandardUser1|300010204|0|Perú|Ciudad S1|2025-02-01|-
 StandardUser2|300010206|0|Perú|Ciudad S2|2025-02-02|-
 StandardUser3|300010106|0|Perú|Ciudad S3|2025-02-03|-

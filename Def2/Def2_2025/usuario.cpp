@@ -44,12 +44,6 @@ Usuario::Usuario(const string& nick, const string& pass, bool esPremium,
     for (int i = 0; i < 5; ++i)
         ultimas5[i] = nullptr;
 
-    // Si hay un usuario seguido, establecerlo en la playlist
-    if (!usuarioSeguido.empty() && usuarioSeguido != "-") {
-        // Esto necesitaría acceso a la playlist del usuario seguido
-        // Depende de cómo tengas implementado el sistema de playlists
-        cout << "DEBUG: Usuario " << nick << " sigue a " << seguido << endl;
-    }
 }
 
 static long estimarMemoriaCancionPtrYObjeto() {

@@ -23,17 +23,22 @@ long Cancion::getTamano() const { return tamano; }
 int Cancion::getRelacionado1() const { return relacionados[0]; }
 int Cancion::getRelacionado2() const { return relacionados[1]; }
 
-void Cancion::mostrarCancion(const std::string& membresia) const {
+void Cancion::mostrarCancion(const std::string& tipoCalidad) const {
     std::string calidad;
 
-    if (membresia == "premium" || membresia == "PREMIUM")
+    if (tipoCalidad == "C" || tipoCalidad == "premium" || tipoCalidad == "PREMIUM" || tipoCalidad == "320")
         calidad = "_320.ogg";
     else
         calidad = "_128.ogg";
 
     std::cout << "---------------------------------------------" << std::endl;
-    std::cout << "Ruta al archivo de audio: " << rutaBase << calidad << std::endl;
-    std::cout << "Duracion: " << duracion << " min" << std::endl;
+    std::cout << "ID: " << id << std::endl;
+    std::cout << "Nombre: " << nombre << std::endl;
+    std::cout << "Artista: " << artista << std::endl;
+    std::cout << "Duración: " << duracion << " min" << std::endl;
+    std::cout << "Ruta: " << rutaBase << calidad << std::endl;
+    std::cout << "Tamaño: " << tamano << " bytes" << std::endl;
+    std::cout << "Relacionados: " << relacionados[0] << ", " << relacionados[1] << std::endl;
     std::cout << "---------------------------------------------" << std::endl;
 }
 

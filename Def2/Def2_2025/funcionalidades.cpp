@@ -261,9 +261,11 @@ void menuPrincipal(Usuario* usuario, Playlist* playlist) {
 
         if (usuario->esPremium()) {
             cout << "4. Mi lista de favoritos" << endl;
-            cout << "5. Salir" << endl;
+            cout << "5. Seguir a otro usuario" << endl;
+            cout << "6. Salir" << endl;
         } else {
-            cout << "4. Salir" << endl;
+            cout << "4. Seguir a otro usuario" << endl;
+            cout << "5. Salir" << endl;
         }
 
         cout << "Seleccione una opcion: ";
@@ -283,10 +285,17 @@ void menuPrincipal(Usuario* usuario, Playlist* playlist) {
             if (usuario->esPremium()) {
                 menuFavoritos(usuario, playlist);
             } else {
-                cout << "Saliendo..." << endl;
+                menuSeguirUsuario(usuario, playlist);
             }
             break;
         case 5:
+            if (usuario->esPremium()) {
+                menuSeguirUsuario(usuario, playlist);
+            } else {
+                cout << "Saliendo..." << endl;
+            }
+            break;
+        case 6:
             if (usuario->esPremium()) {
                 cout << "Saliendo..." << endl;
             } else {
@@ -302,7 +311,7 @@ void menuPrincipal(Usuario* usuario, Playlist* playlist) {
         cout << "Iteraciones acumuladas: " << iteraciones_totales << endl;
         cout << "Memoria acumulada: " << memoria_total << " bytes" << endl;
 
-    } while ((usuario->esPremium() && opcion != 5) || (!usuario->esPremium() && opcion != 4));
+    } while ((usuario->esPremium() && opcion != 6) || (!usuario->esPremium() && opcion != 5));
 }
 
 void menuReproduccionAleatoria(Usuario* usuario) {
@@ -423,3 +432,196 @@ void menuFavoritos(Usuario* usuario, Playlist* playlist) {
     // Guardar playlist al salir
     playlist->guardarEnArchivo(".");
 }
+
+// Función para actualizar el usuario seguido en el archivo usuarios.txt
+bool actualizarUsuarioSeguidoEnArchivo(const string& nickname, const string& usuarioSeguido) {
+    ifstream archivoEntrada("usuarios.txt");
+    if (!archivoEntrada.is_open()) {
+        cout << "Error al abrir el archivo de usuarios para lectura." << endl;
+        return false;
+    }
+
+    vector<string> lineas;
+    string linea;
+    bool encontrado = false;
+
+    // Leer todas las líneas y buscar el usuario a actualizar
+    while (getline(archivoEntrada, linea)) {
+        if (linea.empty()) continue;
+
+        size_t pos = linea.find('|');
+        if (pos != string::npos) {
+            string nickActual = linea.substr(0, pos);
+
+            if (nickActual == nickname) {
+                // Reconstruir la línea con el nuevo usuario seguido
+                vector<string> campos;
+                size_t inicio = 0;
+                size_t fin = 0;
+
+                for (int i = 0; i < 6; i++) {
+                    fin = linea.find('|', inicio);
+                    if (fin == string::npos) break;
+                    campos.push_back(linea.substr(inicio, fin - inicio));
+                    inicio = fin + 1;
+                }
+                // El último campo (usuario seguido) lo reemplazamos
+                campos.push_back(usuarioSeguido);
+
+                // Reconstruir la línea
+                string nuevaLinea = campos[0] + "|" + campos[1] + "|" + campos[2] + "|" +
+                                    campos[3] + "|" + campos[4] + "|" + campos[5] + "|" +
+                                    campos[6];
+                lineas.push_back(nuevaLinea);
+                encontrado = true;
+            } else {
+                lineas.push_back(linea);
+            }
+        } else {
+            lineas.push_back(linea);
+        }
+    }
+    archivoEntrada.close();
+
+    if (!encontrado) {
+        cout << "Usuario no encontrado en el archivo." << endl;
+        return false;
+    }
+
+    // Escribir todas las líneas de vuelta al archivo
+    ofstream archivoSalida("usuarios.txt");
+    if (!archivoSalida.is_open()) {
+        cout << "Error al abrir el archivo de usuarios para escritura." << endl;
+        return false;
+    }
+
+    for (const string& lin : lineas) {
+        archivoSalida << lin << "\n";
+    }
+    archivoSalida.close();
+
+    return true;
+}
+
+// Función auxiliar para obtener el usuario seguido actual desde el archivo
+string obtenerUsuarioSeguidoActual(const string& nickname) {
+    ifstream archivo("usuarios.txt");
+    if (!archivo.is_open()) {
+        return "-";
+    }
+
+    string linea;
+    while (getline(archivo, linea)) {
+        if (linea.empty()) continue;
+
+        size_t pos = linea.find('|');
+        if (pos != string::npos) {
+            string nickActual = linea.substr(0, pos);
+
+            if (nickActual == nickname) {
+                // Extraer el último campo (usuario seguido)
+                vector<string> campos;
+                size_t inicio = 0;
+                size_t fin = 0;
+
+                for (int i = 0; i < 7; i++) {
+                    fin = linea.find('|', inicio);
+                    if (fin == string::npos) {
+                        // Último campo
+                        campos.push_back(linea.substr(inicio));
+                        break;
+                    }
+                    campos.push_back(linea.substr(inicio, fin - inicio));
+                    inicio = fin + 1;
+                }
+
+                if (campos.size() >= 7) {
+                    return campos[6];
+                }
+            }
+        }
+    }
+    archivo.close();
+    return "-";
+}
+
+
+void menuSeguirUsuario(Usuario* usuario, Playlist* playlist) {
+    cout << "\n=== SEGUIR A OTRO USUARIO ===" << endl;
+
+    string nicknameActual = usuario->obtenerNicknameUsuario();
+
+    // Mostrar usuario actualmente seguido (si existe)
+    Playlist* playlistActualSeguida = playlist->obtenerPlaylistSeguida();
+    if (playlistActualSeguida != nullptr) {
+        cout << "Actualmente sigues a: " << playlistActualSeguida->obtenerNicknameUsuario() << endl;
+        cout << "¿Deseas dejar de seguir a este usuario? (s/n): ";
+        char opcion;
+        cin >> opcion;
+        if (opcion == 's' || opcion == 'S') {
+            playlist->seguirPlaylist(nullptr);
+            usuario->setUsuarioSeguido("-");
+
+            // Actualizar en el archivo
+            if (actualizarUsuarioSeguidoEnArchivo(nicknameActual, "-")) {
+                cout << "Has dejado de seguir al usuario." << endl;
+            } else {
+                cout << "Error al actualizar el archivo de usuarios." << endl;
+            }
+            return;
+        }
+    }
+
+    string nicknameSeguir;
+    cout << "Ingrese el nickname del usuario que desea seguir: ";
+    cin >> nicknameSeguir;
+
+    // Verificar que no sea el mismo usuario
+    if (nicknameSeguir == nicknameActual) {
+        cout << "No puedes seguirte a ti mismo." << endl;
+        return;
+    }
+
+    // Verificar si el archivo de playlist del usuario existe
+    string nombreArchivo = nicknameSeguir + ".txt";
+    ifstream archivo(nombreArchivo);
+    if (!archivo.is_open()) {
+        cout << "El usuario '" << nicknameSeguir << "' no existe o no tiene playlist." << endl;
+        cout << "Solo puedes seguir usuarios que tengan una playlist guardada." << endl;
+        return;
+    }
+    archivo.close();
+
+    // Si ya está siguiendo a alguien, preguntar si quiere cambiar
+    if (playlistActualSeguida != nullptr) {
+        cout << "Ya estás siguiendo a " << playlistActualSeguida->obtenerNicknameUsuario() << endl;
+        cout << "¿Deseas cambiar y seguir a " << nicknameSeguir << "? (s/n): ";
+        char opcion;
+        cin >> opcion;
+        if (opcion != 's' && opcion != 'S') {
+            cout << "Operación cancelada." << endl;
+            return;
+        }
+    }
+
+    // Crear y cargar la playlist del usuario a seguir
+    Playlist* playlistSeguida = new Playlist();
+    playlistSeguida->asignarNicknameUsuario(nicknameSeguir);
+    playlistSeguida->cargarDesdeArchivoPorNickname(nicknameSeguir, ".");
+
+    // Establecer la relación de seguimiento
+    playlist->seguirPlaylist(playlistSeguida);
+    usuario->setUsuarioSeguido(nicknameSeguir);
+
+    // Actualizar en el archivo
+    if (actualizarUsuarioSeguidoEnArchivo(nicknameActual, nicknameSeguir)) {
+        cout << "¡Ahora sigues al usuario " << nicknameSeguir << "!" << endl;
+        cout << "Su playlist con " << playlistSeguida->obtenerTotalCanciones()
+             << " canciones ha sido cargada y estará disponible en tu lista de favoritos." << endl;
+        cout << "El cambio ha sido guardado en el sistema." << endl;
+    } else {
+        cout << "Error: No se pudo guardar el cambio en el archivo de usuarios." << endl;
+    }
+}
+
+
