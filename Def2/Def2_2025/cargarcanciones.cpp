@@ -18,7 +18,7 @@ void parsearLineaCancion(const string& linea, Cancion*& nuevaCancion) {
     totalIteraciones++;
     if (linea.empty()) return;
 
-    string idStr, nombre, duracionStr, ruta, tamanoStr, relacionadosStr;
+    string idStr, nombre, artista, duracionStr, ruta, tamanoStr, relacionadosStr;
     int id = 0, rel1 = 0, rel2 = 0;
     float duracion = 0.0f;
     long tamano = 0;
@@ -28,6 +28,7 @@ void parsearLineaCancion(const string& linea, Cancion*& nuevaCancion) {
     totalIteraciones += 2;
 
     if (pos2 != string::npos) {
+        // Campo 1: ID
         idStr = linea.substr(pos1, pos2 - pos1);
         for (size_t i = 0; i < idStr.length(); i++) {
             if (idStr[i] >= '0' && idStr[i] <= '9') {
@@ -36,10 +37,17 @@ void parsearLineaCancion(const string& linea, Cancion*& nuevaCancion) {
             }
         }
 
+        // Campo 2: Nombre
         pos1 = pos2 + 1;
         pos2 = linea.find('|', pos1);
         nombre = linea.substr(pos1, pos2 - pos1);
 
+        // Campo 3: Artista (NUEVO CAMPO)
+        pos1 = pos2 + 1;
+        pos2 = linea.find('|', pos1);
+        artista = linea.substr(pos1, pos2 - pos1);
+
+        // Campo 4: Duración
         pos1 = pos2 + 1;
         pos2 = linea.find('|', pos1);
         duracionStr = linea.substr(pos1, pos2 - pos1);
@@ -54,10 +62,12 @@ void parsearLineaCancion(const string& linea, Cancion*& nuevaCancion) {
             }
         }
 
+        // Campo 5: Ruta
         pos1 = pos2 + 1;
         pos2 = linea.find('|', pos1);
         ruta = linea.substr(pos1, pos2 - pos1);
 
+        // Campo 6: Tamaño
         pos1 = pos2 + 1;
         pos2 = linea.find('|', pos1);
         tamanoStr = linea.substr(pos1, pos2 - pos1);
@@ -68,6 +78,7 @@ void parsearLineaCancion(const string& linea, Cancion*& nuevaCancion) {
             }
         }
 
+        // Campo 7: Relacionados
         pos1 = pos2 + 1;
         relacionadosStr = linea.substr(pos1);
         size_t coma = relacionadosStr.find(',');
@@ -83,8 +94,9 @@ void parsearLineaCancion(const string& linea, Cancion*& nuevaCancion) {
         }
     }
 
-    totalMemoria += sizeof(Cancion) + sizeof(string) * 6;
-    nuevaCancion = new Cancion(id, nombre, duracion, ruta, tamano, rel1, rel2);
+    totalMemoria += sizeof(Cancion) + sizeof(string) * 7;
+    // Llamada CORREGIDA al constructor con artista
+    nuevaCancion = new Cancion(id, nombre, artista, duracion, ruta, tamano, rel1, rel2);
 }
 
 bool cargarCancionesDesdeTXT(const string& nombreArchivoIgnorado) {
@@ -120,7 +132,7 @@ bool cargarCancionesDesdeTXT(const string& nombreArchivoIgnorado) {
             if (cancionesPorBloque[bloquesUsados] >= TAM_BLOQUE) {
                 bloquesUsados++;
                 if (bloquesUsados >= MAX_BLOQUES) {
-                    cout << "Límite máximo de bloques alcanzado.\n";
+                    cout << "Limite maximo de bloques alcanzado.\n";
                     break;
                 }
             }
@@ -138,8 +150,6 @@ bool cargarCancionesDesdeTXT(const string& nombreArchivoIgnorado) {
     return true;
 }
 
-
-
 void mostrarCancionesCargadas(int limite = 10, const string& membresia = "C") {
     int mostradas = 0;
     for (int b = 0; b <= bloquesUsados && mostradas < limite; b++) {
@@ -150,4 +160,28 @@ void mostrarCancionesCargadas(int limite = 10, const string& membresia = "C") {
             }
         }
     }
+}
+
+// Función CORREGIDA para obtener canciones
+Cancion** obtenerCanciones(int bloque) {
+    if (bloque >= 0 && bloque <= bloquesUsados) {
+        return canciones[bloque];
+    }
+    return nullptr;
+}
+
+int* obtenerCancionesPorBloque() {
+    return cancionesPorBloque;
+}
+
+int obtenerBloquesUsados() {
+    return bloquesUsados;
+}
+
+int obtenerTotalIteraciones() {
+    return totalIteraciones;
+}
+
+size_t obtenerTotalMemoria() {
+    return totalMemoria;
 }

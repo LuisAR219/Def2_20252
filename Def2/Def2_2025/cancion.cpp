@@ -3,11 +3,16 @@
 
 using namespace std;
 
-
-Cancion::Cancion(int id, const string& nombre, float duracion,  const string& rutaBase, long tamano, int r1, int r2)
-    : id(id), nombre(nombre), duracion(duracion), rutaBase(rutaBase), tamano(tamano) {
+Cancion::Cancion(int id, const string& nombre, const string& artista, float duracion,
+                 const string& rutaBase, long tamano, int r1, int r2)
+    : id(id), nombre(nombre), artista(artista), duracion(duracion),
+    rutaBase(rutaBase), tamano(tamano) {
     relacionados[0] = r1;
     relacionados[1] = r2;
+}
+
+string Cancion::getArtista() const {
+    return artista;
 }
 
 int Cancion::getId() const { return id; }
@@ -35,6 +40,7 @@ void Cancion::mostrarCancion(const std::string& membresia) const {
 bool Cancion::operator==(const Cancion& otra) const {
     return (id == otra.id) ||
            (nombre == otra.nombre &&
+            artista == otra.artista &&
             duracion == otra.duracion &&
             rutaBase == otra.rutaBase &&
             tamano == otra.tamano);

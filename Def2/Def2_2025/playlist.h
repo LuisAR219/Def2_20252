@@ -7,26 +7,29 @@
 #include <fstream>
 using namespace std;
 
-
-
 class Playlist {
 private:
     static const int MAX_BLOQUES = 10;
     static const int TAM_BLOQUE = 1000;
     static const int K_REPRODUCCIONES_AUTOMATICAS = 10;
+
     Cancion** bloques[MAX_BLOQUES];
     int cancionesPorBloque[MAX_BLOQUES];
     Playlist* seguida;
     long iteraciones;
-
     long memoriaUsada;
-    int idUsuario;
+    string nicknameUsuario;
 
 public:
-
     Playlist();
-    void asignarIdUsuario(int id);
-    int obtenerIdUsuario() const;
+
+    void asignarNicknameUsuario(const string& nickname);
+    string obtenerNicknameUsuario() const;
+    int obtenerTotalCanciones() const;
+    Cancion** obtenerBloque(int bloque) const;
+    int obtenerCancionesPorBloque(int bloque) const;
+    bool tienePlaylistSeguida() const { return seguida != nullptr; }
+    Playlist* obtenerPlaylistSeguida() const { return seguida; }
 
     void agregarCancion(Cancion* c);
     void seguirPlaylist(Playlist* otra);
@@ -35,24 +38,15 @@ public:
     Cancion* buscarCancionPorID(int id) const;
 
     void guardarEnArchivo(const string& carpetaDestino);
-    void cargarDesdeArchivoPorId(int id, const string& carpetaOrigen);
+    void cargarDesdeArchivoPorNickname(const string& nickname, const string& carpetaOrigen);
     void crearDesdeCancionesCargadas();
 
     long obtenerIteracionesTotales() const { return iteraciones; }
     long obtenerMemoriaUsadaTotal() const { return memoriaUsada; }
-
-    Cancion** obtenerBloque(int idx) const {
-        if (idx < 0 || idx >= MAX_BLOQUES) return nullptr;
-        return bloques[idx];
-    }
-
-    int obtenerCancionesPorBloque(int idx) const {
-        if (idx < 0 || idx >= MAX_BLOQUES) return 0;
-        return cancionesPorBloque[idx];
-    }
 };
 
 #endif
+
 
 
 
