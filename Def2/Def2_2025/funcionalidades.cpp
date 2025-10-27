@@ -261,9 +261,11 @@ void menuPrincipal(Usuario* usuario, Playlist* playlist) {
 
         if (usuario->esPremium()) {
             cout << "4. Mi lista de favoritos" << endl;
-            cout << "5. Salir" << endl;
+            cout << "5. Seguir a otro usuario" << endl;
+            cout << "6. Salir" << endl;
         } else {
-            cout << "4. Salir" << endl;
+            cout << "4. Seguir a otro usuario" << endl;
+            cout << "5. Salir" << endl;
         }
 
         cout << "Seleccione una opcion: ";
@@ -283,10 +285,17 @@ void menuPrincipal(Usuario* usuario, Playlist* playlist) {
             if (usuario->esPremium()) {
                 menuFavoritos(usuario, playlist);
             } else {
-                cout << "Saliendo..." << endl;
+                menuSeguirUsuario(usuario, playlist);
             }
             break;
         case 5:
+            if (usuario->esPremium()) {
+                menuSeguirUsuario(usuario, playlist);
+            } else {
+                cout << "Saliendo..." << endl;
+            }
+            break;
+        case 6:
             if (usuario->esPremium()) {
                 cout << "Saliendo..." << endl;
             } else {
@@ -302,7 +311,7 @@ void menuPrincipal(Usuario* usuario, Playlist* playlist) {
         cout << "Iteraciones acumuladas: " << iteraciones_totales << endl;
         cout << "Memoria acumulada: " << memoria_total << " bytes" << endl;
 
-    } while ((usuario->esPremium() && opcion != 5) || (!usuario->esPremium() && opcion != 4));
+    } while ((usuario->esPremium() && opcion != 6) || (!usuario->esPremium() && opcion != 5));
 }
 
 void menuReproduccionAleatoria(Usuario* usuario) {
@@ -422,4 +431,69 @@ void menuFavoritos(Usuario* usuario, Playlist* playlist) {
 
     // Guardar playlist al salir
     playlist->guardarEnArchivo(".");
+}
+
+
+void menuSeguirUsuario(Usuario* usuario, Playlist* playlist) {
+    cout << "\n=== SEGUIR A OTRO USUARIO ===" << endl;
+
+    // Mostrar usuario actualmente seguido (si existe)
+    Playlist* playlistActualSeguida = playlist->obtenerPlaylistSeguida();
+    if (playlistActualSeguida != nullptr) {
+        cout << "Actualmente sigues a: " << playlistActualSeguida->obtenerNicknameUsuario() << endl;
+        cout << "¿Deseas dejar de seguir a este usuario? (s/n): ";
+        char opcion;
+        cin >> opcion;
+        if (opcion == 's' || opcion == 'S') {
+            playlist->seguirPlaylist(nullptr);
+            usuario->setUsuarioSeguido("-");
+            cout << "Has dejado de seguir al usuario." << endl;
+            return;
+        }
+    }
+
+    string nicknameSeguir;
+    cout << "Ingrese el nickname del usuario que desea seguir: ";
+    cin >> nicknameSeguir;
+
+    // Verificar que no sea el mismo usuario
+    if (nicknameSeguir == usuario->obtenerNicknameUsuario()) {
+        cout << "No puedes seguirte a ti mismo." << endl;
+        return;
+    }
+
+    // Verificar si el archivo de playlist del usuario existe
+    string nombreArchivo = nicknameSeguir + ".txt";
+    ifstream archivo(nombreArchivo);
+    if (!archivo.is_open()) {
+        cout << "El usuario '" << nicknameSeguir << "' no existe o no tiene playlist." << endl;
+        cout << "Solo puedes seguir usuarios que tengan una playlist guardada." << endl;
+        return;
+    }
+    archivo.close();
+
+    // Si ya está siguiendo a alguien, preguntar si quiere cambiar
+    if (playlistActualSeguida != nullptr) {
+        cout << "Ya estás siguiendo a " << playlistActualSeguida->obtenerNicknameUsuario() << endl;
+        cout << "¿Deseas cambiar y seguir a " << nicknameSeguir << "? (s/n): ";
+        char opcion;
+        cin >> opcion;
+        if (opcion != 's' && opcion != 'S') {
+            cout << "Operación cancelada." << endl;
+            return;
+        }
+    }
+
+    // Crear y cargar la playlist del usuario a seguir
+    Playlist* playlistSeguida = new Playlist();
+    playlistSeguida->asignarNicknameUsuario(nicknameSeguir);
+    playlistSeguida->cargarDesdeArchivoPorNickname(nicknameSeguir, ".");
+
+    // Establecer la relación de seguimiento
+    playlist->seguirPlaylist(playlistSeguida);
+    usuario->setUsuarioSeguido(nicknameSeguir);
+
+    cout << "¡Ahora sigues al usuario " << nicknameSeguir << "!" << endl;
+    cout << "Su playlist con " << playlistSeguida->obtenerTotalCanciones()
+         << " canciones ha sido cargada y estará disponible en tu lista de favoritos." << endl;
 }

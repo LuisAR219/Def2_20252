@@ -12,6 +12,7 @@ extern long iteraciones_totales;
 extern long memoria_total;
 
 // Prototipos de funciones
+void menuSeguirUsuario(Usuario* usuario, Playlist* playlist);
 void cargarDatosIniciales();
 void mostrarMetricasFinales();
 bool cargarUsuariosDesdeArchivo(Usuario**& usuarios, int& totalUsuarios);

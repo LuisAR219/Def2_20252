@@ -227,11 +227,6 @@ void Playlist::guardarEnArchivo(const string& carpetaDestino) {
         }
     }
 
-    // Guardar referencia al usuario seguido si existe
-    if (seguida != nullptr) {
-        archivo << "SEGUIDO|" << seguida->obtenerNicknameUsuario() << "\n";
-    }
-
     archivo.close();
     cout << "Playlist de " << nicknameUsuario << " guardada correctamente en: " << ruta << endl;
 }

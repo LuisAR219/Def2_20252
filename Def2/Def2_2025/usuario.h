@@ -50,6 +50,8 @@ public:
     string getFechaRegistro() const { return fechaRegistro; }
     string getUsuarioSeguido() const { return usuarioSeguido; }
     void setPremium(bool p) { premium = p; }
+    void setUsuarioSeguido(const string& seguido) { usuarioSeguido = seguido; }
+    string obtenerNicknameUsuario() const { return nickname; }
 
     void reproducirAleatorioDesdeBloques(Playlist* lista);
     void reproducirAleatorioPlaylist(Playlist* playlist);
